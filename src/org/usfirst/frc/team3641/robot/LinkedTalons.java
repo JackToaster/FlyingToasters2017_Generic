@@ -2,6 +2,7 @@ package org.usfirst.frc.team3641.robot;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TrajectoryPoint;
 
 public class LinkedTalons implements AbstractTalon {
 	private int numberOfTalons;
@@ -80,6 +81,30 @@ public class LinkedTalons implements AbstractTalon {
 	public void setBreakMode(boolean on) {
 		for (CANTalon talon : talons)
 			talon.enableBrakeMode(on);
+	}
+
+	@Override
+	public void setPIDgains(double feedForward, double proportional, double integral, double derivative) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getNumBufferPoints() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean hasUnderrun() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void pushPoints(TrajectoryPoint[] points) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
