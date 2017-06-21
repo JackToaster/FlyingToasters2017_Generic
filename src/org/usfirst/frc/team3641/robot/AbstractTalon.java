@@ -7,9 +7,11 @@ public interface AbstractTalon {
 
 	void setPIDgains(double feedForward, double proportional, double integral, double derivative);
 	
-	int getNumBufferPoints();
+	public int getEncPosition();
 	
-	boolean hasUnderrun();
+	public void setEncPosition(int position);
 	
-	void pushPoints(CANTalon.TrajectoryPoint[] points);
+	public CANTalon.MotionProfileStatus getStatus();
+	
+	void pushPoints(MotionProfile.MPPoint[] points);
 }

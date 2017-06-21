@@ -2,12 +2,14 @@ package org.usfirst.frc.team3641.robot;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.MotionProfileStatus;
 import com.ctre.CANTalon.TrajectoryPoint;
 
 public class LinkedTalons implements AbstractTalon {
 	private int numberOfTalons;
 	private CANTalon[] talons;
 	private CANTalon feedbackTalon = null;
+	private CANTalon.MotionProfileStatus talonStatus;
 	
 	/**
 	 * Creates a new set of linked talons.
@@ -16,6 +18,9 @@ public class LinkedTalons implements AbstractTalon {
 	 *            Each of the IDs you want to control.
 	 */
 	public LinkedTalons(int... talonIDs) {
+		//
+		talonStatus = new CANTalon.MotionProfileStatus();
+		
 		numberOfTalons = talonIDs.length;
 		talons = new CANTalon[numberOfTalons];
 
@@ -78,7 +83,7 @@ public class LinkedTalons implements AbstractTalon {
 	 * @param on
 	 *            True for on, false for off.
 	 */
-	public void setBreakMode(boolean on) {
+	public void setBrakeMode(boolean on) {
 		for (CANTalon talon : talons)
 			talon.enableBrakeMode(on);
 	}
@@ -89,22 +94,52 @@ public class LinkedTalons implements AbstractTalon {
 		
 	}
 
-	@Override
-	public int getNumBufferPoints() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
+	
 	public boolean hasUnderrun() {
-		// TODO Auto-generated method stub
-		return false;
+		feedbackTalon.getMotionProfileStatus(talonStatus);
+		boolean underrun = talonStatus.hasUnderrun;
+		feedbackTalon.clearMotionProfileHasUnderrun();
+		return underrun;
 	}
 
 	@Override
-	public void pushPoints(TrajectoryPoint[] points) {
-		// TODO Auto-generated method stub
+	public void pushPoints(MotionProfile.MPPoint[] points) {
+		//create a new trajectory point to push to the talon
+		CANTalon.TrajectoryPoint point = new CANTalon.TrajectoryPoint();
 		
+		//log a warning if the motion profile has underrun
+		if(hasUnderrun()){
+			Logging.logMessage("Motion profile has underrun!", Logging.Priority.WARN);
+		}
+		
+		// loop through the points and push them to the talon's buffer.
+		for (int i = 0; i < points.length; i++) {
+			// position of the point
+			point.position = points[i].position;
+			// velocity of the point
+			point.velocity = points[i].velocity;
+			// time in ms to complete the point
+			point.timeDurMs = points[i].time;
+			// select the correct PIDF values
+			point.profileSlotSelect = 0;
+			// make sure to correct position as well as velocity.
+			point.velocityOnly = false;
+			
+			//set the point to first if necessary
+			point.zeroPos = i == 0;
+			
+			//set the point to last if necessary
+			point.isLastPoint = i == points.length - 1;
+			
+			//push the mp to the talon
+			feedbackTalon.pushMotionProfileTrajectory(point);
+		}
+	}
+
+	@Override
+	public MotionProfileStatus getStatus() {
+		feedbackTalon.getMotionProfileStatus(talonStatus);
+		return talonStatus;// TODO Auto-generated method stub
 	}
 
 }
