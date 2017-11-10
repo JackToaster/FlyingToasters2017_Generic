@@ -1,10 +1,10 @@
 package org.usfirst.frc.team3641.robot;
 
-import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import hardware.DriveBase;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,9 +19,8 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
-	HashMap<String, AbstractFeedbackController> feedbackControllers;
-	
-	DriveBase driveBase = new DriveBase();
+	//TODO make an actual drivebase class
+	DriveBase driveBase;
 	
 	PS4 ps4 = new PS4(0);
 	
@@ -74,7 +73,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		standardPeriodic();
-		driveBase.driveTank(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
+		driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
 	}
 
 	/**
