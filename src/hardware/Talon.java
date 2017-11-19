@@ -2,8 +2,6 @@ package hardware;
 
 import com.ctre.CANTalon;
 
-import controllers.MotionProfile.MPPoint;
-
 public class Talon implements MotorController {
 	protected CANTalon talon;
 	protected double currentPower;

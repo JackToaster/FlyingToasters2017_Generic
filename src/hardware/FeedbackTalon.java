@@ -1,6 +1,5 @@
 package hardware;
 
-import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
 import controllers.AbstractFeedbackController;
@@ -10,7 +9,7 @@ import utilities.Utilities;
 public class FeedbackTalon extends Talon implements FeedbackMotorController, Utilities.Conversions {
 	
 	private AbstractFeedbackController feedbackController;
-	private boolean feedbackActive;
+	private boolean feedbackActive = false;
 	
 	public FeedbackTalon(int talonID) {
 		super(talonID);

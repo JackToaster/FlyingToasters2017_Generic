@@ -4,11 +4,14 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
 import controllers.AbstractFeedbackController;
+import utilities.Logging;
+import utilities.Utilities.Conversions.Distance;
 
 //TODO finish implementing linked talons
 public class FeedbackLinkedTalons extends LinkedTalons implements FeedbackMotorController {
 	private CANTalon feedbackTalon;
-	
+	private AbstractFeedbackController feedbackController;
+	private boolean feedbackActive = false;
 	/**
 	 * Creates a new set of linked talons.
 	 * 
@@ -47,49 +50,47 @@ public class FeedbackLinkedTalons extends LinkedTalons implements FeedbackMotorC
 
 	@Override
 	public double getPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Distance.ENCODER_TICK.convert(feedbackTalon.getEncPosition(), Distance.M);
 	}
 
 	@Override
 	public void setFeedbackDevice(FeedbackDevice device) {
-		// TODO Auto-generated method stub
-		
+		feedbackTalon.setFeedbackDevice(device);
 	}
 
 	@Override
 	public void setFeedbackController(AbstractFeedbackController controller) {
-		// TODO Auto-generated method stub
-		
+		feedbackController = controller;
 	}
+
 
 	@Override
 	public void setFeedbackActive(boolean active) {
-		// TODO Auto-generated method stub
-		
+		feedbackActive = active;
 	}
 
 	@Override
 	public boolean getFeedbackActive() {
-		// TODO Auto-generated method stub
-		return false;
+		return feedbackActive;
 	}
 
 	@Override
 	public void setSetpoint(double setpoint) {
-		// TODO Auto-generated method stub
-		
+		feedbackController.setSetpoint(setpoint);		
 	}
 
 	@Override
 	public double getSetpoint() {
-		// TODO Auto-generated method stub
-		return 0;
+		return feedbackController.getSetpoint();
 	}
 
 	@Override
 	public void runFeedback(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+		if(feedbackActive){
+			double output = feedbackController.run(getPosition(), deltaTime);
+			setPower(output);
+		}else{
+			Logging.w("runFeedback run with feedback inactive");
+		}
 	}
 }

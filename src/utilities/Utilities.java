@@ -1,7 +1,5 @@
 package utilities;
 
-import utilities.Constants.Measurments;
-
 public interface Utilities {
 	/**
 	 * Conversion interface to convert various units.

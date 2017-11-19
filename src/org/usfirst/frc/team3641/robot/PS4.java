@@ -3,6 +3,7 @@ import java.util.EnumMap;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
+//i'm not sure what's going on here, but it works, so I won't touch it.
 public class PS4
 {
 	private EnumMap<Button, Boolean> current, last;

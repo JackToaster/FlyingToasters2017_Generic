@@ -3,7 +3,6 @@ package controllers;
 import java.util.ArrayList;
 
 import hardware.DriveBase;
-import utilities.Constants;
 import utilities.Utilities;
 
 /**
@@ -11,7 +10,9 @@ import utilities.Utilities;
  * @author jackf
  *
  */
-public class MotionProfile implements Constants.Talons{
+
+//TODO FIX EVERYTHING
+public class MotionProfile{
 	public ArrayList<Utilities.robotPosition> path;
 	public ArrayList<MPPoint> leftTraj;
 	public ArrayList<MPPoint> rightTraj;

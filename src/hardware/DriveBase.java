@@ -1,8 +1,6 @@
 package hardware;
 
-import java.util.HashMap;
-
-import com.ctre.CANTalon.FeedbackDevice;
+import java.util.ArrayList;
 
 /**
  * Drivebase class for all of your driving needs
@@ -10,9 +8,44 @@ import com.ctre.CANTalon.FeedbackDevice;
  * @author jackf
  *
  */
-public interface DriveBase{
-	void drive(double... inputs);
-	void update();
-	void setActive(boolean active);
-	boolean getActive();
+public abstract class DriveBase{
+	protected boolean isActive = true;
+	//these two should be mutually exclusive.
+	private ArrayList<MotorController> controllers;
+	private ArrayList<FeedbackMotorController> feedbackControllers;
+	//override this with whatever stuff
+	abstract public void drive(double... inputs);
+	//add a motor controller to the list
+	public void registerMotorController(MotorController mc){
+		if(mc instanceof FeedbackMotorController){
+			FeedbackMotorController fmc = (FeedbackMotorController)mc;
+			feedbackControllers.add(fmc);
+		}else{
+			controllers.add(mc);
+		}
+	}
+	
+	//udpate should be called periodically.
+	protected void update(double dT){
+		if (!isActive) {
+			for (MotorController c : controllers) {
+				c.setPower(0);
+			}
+			for(FeedbackMotorController c: feedbackControllers){
+				c.setFeedbackActive(false);
+				c.setPower(0);
+			}
+		}else{
+			for(FeedbackMotorController c: feedbackControllers){
+				c.runFeedback(dT);
+			}
+		}
+	};
+	public void setActive(boolean active){
+		//set isActive to false
+		isActive = active;
+		//update with dT 0 to set everything IMMEDIATELY to zero.
+		update(0);
+	};
+	public boolean getActive(){ return isActive;}
 }
