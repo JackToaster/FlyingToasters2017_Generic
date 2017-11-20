@@ -4,7 +4,7 @@ import utilities.Logging;
 
 public class ProportionalController extends FeedForwardController {
 
-	public double kP;
+	protected double kP;
 	
 	/**
 	 * create a proportional controller with the given gains

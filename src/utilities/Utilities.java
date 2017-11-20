@@ -1,6 +1,6 @@
 package utilities;
 
-public interface Utilities {
+public static abstract class Utilities {
 	/**
 	 * Conversion interface to convert various units.
 	 * 
@@ -252,5 +252,8 @@ public interface Utilities {
 				return Math.sqrt(squareDistance(p2));
 			}
 		}
+	}
+	public double lerp(double p1, double p2, double alpha){
+		return alpha * (p2 - p1) + p1;
 	}
 }

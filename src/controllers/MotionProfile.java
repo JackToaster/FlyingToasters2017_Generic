@@ -12,15 +12,50 @@ import utilities.Utilities;
  */
 
 //TODO FIX EVERYTHING
-public class MotionProfile{
-	public ArrayList<Utilities.robotPosition> path;
-	public ArrayList<MPPoint> leftTraj;
-	public ArrayList<MPPoint> rightTraj;
+public class MotionProfile implements AbstractFeedbackController{
+	private Profile profile;
+	private double totalTime = 0;
 	
-	public int stepTime = 10;
+	public PIDcontroller pid;
 	
-	public DriveBase driveBase;
+	public MotionProfile(PIDcontroller pidController){
+		pid = pidController;
+	}
 	
+	
+	public class Profile {
+		private MPPoint[] trajectory;
+		
+		public Profile(){}
+		
+		public void setPoints(MPPoint... points){
+			if(points.length < 2){
+				Logging.e("Useless motion profile - less than 2 points");
+			}else{
+				trajectory = points;
+			}
+		}
+		
+		public MPPoint getPoint(int index){
+			return trajectory[index];
+		}
+		
+		public MPPoint getInterpolatedPoint(double time){
+			int upperIndex = 0;
+			while(getPoint(upperIndex).time < time){
+				upperIndex++
+			}
+			if(upperIndex > 0){
+				int lowerIndex = upperIndex - 1;
+				
+				MPPoint upper = getPoint(upperIndex);
+				MPPoint lower = getPoint(lowerIndex);
+				
+			}else{
+				return getPoint(0);
+			}
+		}
+	}
 	/**
 	 * Motion profile point class, has a position, velocity, and time (in ms)
 	 * 
@@ -30,52 +65,28 @@ public class MotionProfile{
 	public class MPPoint {
 		public double position;
 		public double velocity;
-		public int time = stepTime;
-		
-		public boolean isStart = false, isEnd = false;
+		public double time;
 
-		public MPPoint(double vel, double pos, int t) {
+		public MPPoint(double vel, double pos, double t) {
 			velocity = vel;
 			position = pos;
 			time = t;
 		}
-		
-		public MPPoint(double vel, double pos, int t, boolean start, boolean end){
-			this(vel,pos,t);
-			isStart = start;
-			isEnd = end;
-		}
-		
-		public void setEnd(){
-			isEnd = true;
-		}
-		
-		public void setStart(){
-			isStart = true;
-		}
 	}
 	
-//	/**
-//	 * push the next set of point to the motion profile buffer in the talon.
-//	 * Should be called whenever the buffer gets too low.
-//	 * 
-//	 * @param startIndex
-//	 *            the profile point index to start with
-//	 *            
-//	 */
-//	public void pushPoints(int startIndex, int number) {
-//		//array of points for left and right wheels
-//		MPPoint[] leftPoints = new MPPoint[number];
-//		MPPoint[] rightPoints = new MPPoint[number];
-//		
-//		//add points to array
-//		for(int i = startIndex; i < startIndex + number; i++){
-//			leftPoints[i] = leftTraj.get(i);
-//			rightPoints[i] = rightTraj.get(i);
-//		}
-//		
-//		
-//		//push the points to the buffers
-//		DriveBase.talons.get(LEFT_ENCODER_TALON).pushPoints(leftPoints);
-// 	}
+	public void setGains(double... gains);
+
+	public void readFromPrefs(String name);
+	
+	public void setSetpoint(double setpoint);
+	
+	public double getSetpoint();
+	
+	public double run(double current, double deltaTime){
+		totalTime += deltaTime;
+	}
+	
+	public void reset();
+
+	public void logStatus();
 }

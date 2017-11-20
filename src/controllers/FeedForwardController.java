@@ -10,8 +10,8 @@ import utilities.Logging;
  *
  */
 public class FeedForwardController implements AbstractFeedbackController {
-	public double kFeedForward = 0;
-	public double setpoint;
+	protected double kFeedForward = 0;
+	protected double setpoint;
 	/**
 	 * create a new feedforward controller with the proper gain
 	 * 
