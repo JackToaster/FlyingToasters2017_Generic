@@ -14,11 +14,12 @@ import utilities.Logging;
 // TODO add fancy class that does all the stuff the old PID did
 public class PIDcontroller extends ProportionalController {
 	private double kI, kD;
+	private boolean dOnMeasurement = false;
 	private double maxIntegral;
 	private boolean limitIntegral = false;
 	private double integral = 0;
-	private double lastError = 0;
 	private double lastReading = 0;
+	private double lastError = 0;
 
 	/**
 	 * create a PID controller with no feedforward
@@ -37,10 +38,22 @@ public class PIDcontroller extends ProportionalController {
 		limitIntegral = limitI;
 	}
 	
-	public PIDcontroller(double pGain, double iGain, double dGain, double ffGain double maxI, boolean limitI) {
+	public PIDcontroller(double pGain, double iGain, double dGain, double ffGain, double maxI, boolean limitI) {
 		this(pGain, iGain, dGain, ffGain);
 		maxIntegral = maxI;
 		limitIntegral = limitI;
+	}
+	
+	public void setILimit(double maxI){
+		maxIntegral = maxI;
+	}
+	
+	public void limitI(boolean limit){
+		limitIntegral = limit;
+	}
+	
+	public void setDOnMeasurement(boolean onMeasurement){
+		dOnMeasurement = onMeasurement;
 	}
 	
 	/**
@@ -89,17 +102,23 @@ public class PIDcontroller extends ProportionalController {
 		double error = current - setpoint;
 		// continue integrating
 		integral += error * deltaTime;
-		
-		if(abs(integral) > maxIntegral / kI){
-			if(integral > 0){
-				integral = maxIntegral / kI;
-			}else{
-				integral = maxIntegral / kI;
+		if (limitIntegral) {
+			if (Math.abs(integral) > maxIntegral / kI) {
+				if (integral > 0) {
+					integral = maxIntegral / kI;
+				} else {
+					integral = maxIntegral / kI;
+				}
 			}
 		}
-
-		// find the change in reading / time (dError / dT)
-		double deltaError = (current- lastReading) / deltaTime;
+		
+		double deltaError;
+		if(dOnMeasurement){
+			// find the change in reading / time (dError / dT)
+			deltaError = (current- lastReading) / deltaTime;
+		}else{
+			deltaError = (error - lastError) / deltaTime;
+		}
 
 		// calculate the proportional + FF part of the PID
 		double proportionalValue = super.run(error, deltaTime);
@@ -109,8 +128,8 @@ public class PIDcontroller extends ProportionalController {
 		double derivativeValue = deltaError * kD;
 
 		// set the last error for next loop
-		lastError = error;
 		lastReading = current;
+		lastError = error;
 		// return the value
 		return proportionalValue + integralValue + derivativeValue;
 	}
@@ -121,7 +140,7 @@ public class PIDcontroller extends ProportionalController {
 	 */
 	public void reset() {
 		integral = 0;
-		lastError = 0;
+		lastReading = 0;
 	}
 
 	@Override

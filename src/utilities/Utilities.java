@@ -1,6 +1,6 @@
 package utilities;
 
-public static abstract class Utilities {
+public abstract class Utilities {
 	/**
 	 * Conversion interface to convert various units.
 	 * 
@@ -253,7 +253,7 @@ public static abstract class Utilities {
 			}
 		}
 	}
-	public double lerp(double p1, double p2, double alpha){
+	public static double lerp(double p1, double p2, double alpha){
 		return alpha * (p2 - p1) + p1;
 	}
 }
