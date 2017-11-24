@@ -1,6 +1,6 @@
 package hardware;
 
-import com.ctre.CANTalon.FeedbackDevice;
+import simulation.CANTalon.FeedbackDevice;
 
 import controllers.AbstractFeedbackController;
 import utilities.Logging;

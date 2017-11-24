@@ -1,6 +1,6 @@
 package hardware;
 
-import com.ctre.CANTalon;
+import simulation.CANTalon;
 
 public class Talon implements MotorController {
 	protected CANTalon talon;
