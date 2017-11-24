@@ -13,6 +13,11 @@ public abstract class DriveBase{
 	//these two should be mutually exclusive.
 	private ArrayList<MotorController> controllers;
 	private ArrayList<FeedbackMotorController> feedbackControllers;
+	
+	public DriveBase(){
+		controllers = new ArrayList<MotorController>();
+		feedbackControllers = new ArrayList<FeedbackMotorController>();
+	}
 	//override this with whatever stuff
 	abstract public void drive(double... inputs);
 	//add a motor controller to the list

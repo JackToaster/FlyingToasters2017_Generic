@@ -22,6 +22,7 @@ public class Pro775DriveBase extends DriveBase{
 	}
 	
 	public Pro775DriveBase() {
+		super();
 		//create the linked talons for each side of the drive base
 		left = new LinkedTalons(Talon.LEFT0.id, Talon.LEFT1.id, Talon.LEFT2.id, Talon.LEFT3.id);
 		right = new LinkedTalons(Talon.RIGHT0.id, Talon.RIGHT1.id, Talon.RIGHT2.id, Talon.RIGHT3.id);
