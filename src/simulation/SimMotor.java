@@ -49,7 +49,7 @@ public class SimMotor {
 		public void update(double dT){
 			vel += accel * throttle * dT;
 			vel /= 1.0 + dT;
-			position += vel;
+			position += vel * dT;
 			limitSpeed();
 		}
 		public int getPos(){
@@ -63,6 +63,10 @@ public class SimMotor {
 					vel = -maxVel;
 				}
 			}
+		}
+		
+		public String toString(){
+			return "Position: " + position + ", velocity: " + vel;
 		}
 	}
 }

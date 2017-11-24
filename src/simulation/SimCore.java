@@ -27,6 +27,7 @@ public class SimCore {
 			}
 			robot.teleopPeriodic();
 			simMotor.updateMotors(0.001);
+			System.out.println(simMotor.motors);
 		}
 	}
 }
