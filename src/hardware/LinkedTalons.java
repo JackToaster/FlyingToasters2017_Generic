@@ -2,6 +2,8 @@ package hardware;
 
 import simulation.CANTalon;
 
+//TODO use Talon[] instead of CANTalon[] to allow for current limiting talons
+
 public class LinkedTalons implements MotorController {
 	protected int numberOfTalons;
 	protected CANTalon[] talons;
