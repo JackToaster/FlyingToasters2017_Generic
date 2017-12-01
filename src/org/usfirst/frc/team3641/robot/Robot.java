@@ -20,7 +20,7 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	//SendableChooser<String> chooser = new SendableChooser<>();
 
-	DriveBase driveBase;
+	Pro775DriveBase driveBase;
 	
 	//PS4 ps4 = new PS4(0);
 	
@@ -55,6 +55,16 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + autoSelected);
 	}
 
+	
+	@Override
+	public void autonomousPeriodic() {
+		standardPeriodic();
+		switch (autoSelected) {
+		default:
+			// Put default auto code here
+			break;
+		}
+	}
 	/**
 	 * This function is called periodically during autonomous
 	 */
@@ -68,6 +78,12 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
+	
+	@Override
+	public void teleopInit() {
+		//driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
+		driveBase.feedbackTestinit();
+	}
 	/**
 	 * This function is called periodically during operator control
 	 */
@@ -75,7 +91,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		standardPeriodic();
 		//driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
-		driveBase.drive(1.0,1.0);
 	}
 
 	/**
@@ -89,6 +104,6 @@ public class Robot extends IterativeRobot {
 	 * This method is always called periodically
 	 */
 	public void standardPeriodic() {
-
+		driveBase.update(0.05);
 	}
 }

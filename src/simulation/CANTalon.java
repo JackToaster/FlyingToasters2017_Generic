@@ -40,6 +40,6 @@ public class CANTalon {
 	}
 	
 	private void setMotorInfo(SimMotor.MotorInfo mi){
-		SimMotor.motors.replace(id, mi);
+		SimMotor.motors.put(id, mi);
 	}
 }

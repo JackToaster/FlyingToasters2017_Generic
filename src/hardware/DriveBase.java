@@ -31,7 +31,7 @@ public abstract class DriveBase{
 	}
 	
 	//udpate should be called periodically.
-	protected void update(double dT){
+	public void update(double dT){
 		if (!isActive) {
 			for (MotorController c : controllers) {
 				c.setPower(0);

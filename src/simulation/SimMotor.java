@@ -10,22 +10,25 @@ public class SimMotor {
 		motors = new HashMap<Integer, MotorInfo>();
 	}
 	
-	public void addMotor(int id, double acceleration, double maxVel) {
-		MotorInfo newMotor = new MotorInfo(acceleration, maxVel);
+	public void addMotor(int id, double acceleration, double maxVel, double currentMult, int pdpPort) {
+		MotorInfo newMotor = new MotorInfo(acceleration, maxVel, currentMult);
 		motors.put((Integer) id, newMotor);
+		PDPJNI.addMotor((Byte) (byte) pdpPort, (Integer) id);
 	}
 	
 	public void updateMotors(double dT){
 		for(Integer i : motors.keySet()){
 			MotorInfo current = motors.get(i);
 			current.update(dT);
-			motors.replace(i, current);
+			motors.put(i, current);
 		}
 	}
 	
 	public class MotorInfo{
 		private double accel;
 		private double maxVel;
+		private double currentMult = 1;
+		private double currentAmps = 0;
 		private double vel;
 		private double throttle;
 		private double position;
@@ -43,6 +46,14 @@ public class SimMotor {
 			ticksPerRevolution = tpr;
 		}
 		
+		public MotorInfo(double acceleration, double maxVelocity, double current){
+			this(acceleration, maxVelocity);
+			currentMult = current;
+		}
+		
+		public void setCurrentMult(double current){
+			currentMult = current;
+		}
 		public void setThrottle(double throttle){
 			this.throttle = throttle;
 		}
@@ -51,6 +62,7 @@ public class SimMotor {
 			vel /= 1.0 + dT;
 			position += vel * dT;
 			limitSpeed();
+			currentAmps = throttle * currentMult * (-(vel/maxVel) + 1.5);
 		}
 		public int getPos(){
 			return (int) (ticksPerRevolution * position);
@@ -65,8 +77,12 @@ public class SimMotor {
 			}
 		}
 		
+		public double getCurrent(){
+			return currentAmps;
+		}
+		
 		public String toString(){
-			return "Position: " + position + ", velocity: " + vel;
+			return "\nPosition: " + position + ", velocity: " + vel + ", current: " + currentAmps;
 		}
 	}
 }

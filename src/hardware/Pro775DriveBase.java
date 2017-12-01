@@ -41,5 +41,13 @@ public class Pro775DriveBase extends DriveBase{
 			right.setPower(inputs[1]);
 		}
 	}
-
+	
+	public void feedbackTestinit(){
+		FeedForwardController ff1 = new FeedForwardController(1);
+		FeedForwardController ff2 = new FeedForwardController(1);
+		left.setFeedbackController(ff1);
+		right.setFeedbackController(ff2);
+		left.setFeedbackActive(true);
+		right.setFeedbackActive(true);
+	}
 }
