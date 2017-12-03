@@ -55,16 +55,6 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + autoSelected);
 	}
 
-	
-	@Override
-	public void autonomousPeriodic() {
-		standardPeriodic();
-		switch (autoSelected) {
-		default:
-			// Put default auto code here
-			break;
-		}
-	}
 	/**
 	 * This function is called periodically during autonomous
 	 */
