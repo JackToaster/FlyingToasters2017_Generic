@@ -16,14 +16,14 @@ public class SimCore {
 		
 		SimMotor simMotor = new SimMotor();
 		IterativeRobot robot = new Robot();
-		simMotor.addMotor(8, 5, 4.5,15,1);
-		simMotor.addMotor(9, 5, 4.5,15,2);
-		simMotor.addMotor(10,5, 4.5,15,3);
-		simMotor.addMotor(11,5, 4.5,15,4);
-		simMotor.addMotor(5, 5, 4.5,15,5);
-		simMotor.addMotor(1, 5, 4.5,15,6);
-		simMotor.addMotor(2, 5, 4.5,15,7);
-		simMotor.addMotor(3, 5, 4.5,15,8);
+		simMotor.addMotor(8, 5, 4.5,1);
+		simMotor.addMotor(9, 5, 4.5,2);
+		simMotor.addMotor(10,5, 4.5,3);
+		simMotor.addMotor(11,5, 4.5,4);
+		simMotor.addMotor(5, 5, 4.5,5);
+		simMotor.addMotor(1, 5, 4.5,6);
+		simMotor.addMotor(2, 5, 4.5,7);
+		simMotor.addMotor(3, 5, 4.5,8);
 		
 		robot.robotInit();
 		
