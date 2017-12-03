@@ -4,7 +4,7 @@
  <!--ANT 1.7 is required                                        -->
 
  <target name="compile">
-    <javac srcdir="." destdir="." includes="**/*.java" target="1.7">
+    <javac srcdir="src" destdir="build" includes="**/*.java" target="1.7">
       <classpath refid="classpath.base" />
     </javac>
   </target>
