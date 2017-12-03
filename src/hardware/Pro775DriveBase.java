@@ -1,6 +1,8 @@
 package hardware;
 
 import controllers.FeedForwardController;
+import controllers.PIDcontroller;
+import controllers.ProportionalController;
 import simulation.CANTalon;
 import utilities.Logging;
 
@@ -45,10 +47,16 @@ public class Pro775DriveBase extends DriveBase{
 	}
 	
 	public void feedbackTestinit(){
-		FeedForwardController ff1 = new FeedForwardController(1);
-		FeedForwardController ff2 = new FeedForwardController(1);
+		PIDcontroller ff1 = new PIDcontroller(0.5,0.01,0.5);
+		ff1.setDOnMeasurement(true);
+		ff1.setILimit(0.1);
+		PIDcontroller ff2 = new PIDcontroller(0.5,0.01,0.5);
+		ff2.setILimit(0.1);
+		ff2.setDOnMeasurement(true);
 		left.setFeedbackController(ff1);
 		right.setFeedbackController(ff2);
+		left.setSetpoint(3);
+		right.setSetpoint(3);
 		left.setFeedbackActive(true);
 		right.setFeedbackActive(true);
 	}

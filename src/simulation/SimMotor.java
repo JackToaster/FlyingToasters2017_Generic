@@ -3,6 +3,7 @@ package simulation;
 import java.util.HashMap;
 
 import simulation.PDPJNI;
+import utilities.Utilities.Conversions.Distance;
 
 public class SimMotor {
 	
@@ -15,7 +16,7 @@ public class SimMotor {
 	public void addMotor(int id, double acceleration, double maxVel, double currentMult, int pdpPort) {
 		MotorInfo newMotor = new MotorInfo(acceleration, maxVel, currentMult);
 		motors.put((Integer) id, newMotor);
-		PDPJNI.addMotor((Byte) (byte) pdpPort, (Integer) id);
+		PDPJNI.addMotor((byte) pdpPort, (Integer) id);
 	}
 	
 	public void updateMotors(double dT){
@@ -41,7 +42,7 @@ public class SimMotor {
 			vel = 0;
 			maxVel = maxVelocity;
 			accel = acceleration;
-			ticksPerRevolution = 1;
+			ticksPerRevolution = 1024;
 		}
 		public MotorInfo(double acceleration, double maxVelocity, int tpr){
 			this(acceleration, maxVelocity);
@@ -57,17 +58,38 @@ public class SimMotor {
 			currentMult = current;
 		}
 		public void setThrottle(double throttle){
-			this.throttle = throttle;
+			if(throttle > 1) this.throttle = 1;
+			else if(throttle < -1) this.throttle = -1;
+			else this.throttle = throttle;
 		}
 		public void update(double dT){
-			vel += accel * throttle * dT;
-			vel /= 1.0 + dT;
+			double diff = (throttle * maxVel) - vel;
+			double impulse = accel * dT;
+			if(Math.abs(diff) < impulse) {
+				vel = throttle * maxVel;
+			}else {
+				if(vel > throttle * maxVel) {
+					if(vel > 0) {
+						vel -= 2 * impulse;
+					}else {
+						vel -= impulse;
+					}
+				}else {
+					if(vel < 0) {
+						vel += 2 * impulse;
+					}else {
+						vel += impulse;
+					}
+				}
+			}
+			
 			position += vel * dT;
 			limitSpeed();
+			//just for test, not accurate in any way.
 			currentAmps = throttle * currentMult * (-(vel/maxVel) + 1.5);
 		}
 		public int getPos(){
-			return (int) (ticksPerRevolution * position);
+			return (int) Distance.M.convert(position, Distance.ENCODER_TICK);
 		}
 		public void limitSpeed(){
 			if(Math.abs(vel) > maxVel){
