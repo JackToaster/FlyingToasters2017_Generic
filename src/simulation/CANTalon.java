@@ -9,7 +9,7 @@ public class CANTalon {
 		EncFalling ,
 		EncRising ,
 		PulseWidth ,
-		QuadEncoder 
+		QuadEncoder
 	}
 	private int id;
 	

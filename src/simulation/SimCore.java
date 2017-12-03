@@ -2,6 +2,8 @@ package simulation;
 
 import org.usfirst.frc.team3641.robot.Robot;
 
+import edu.wpi.first.wpilibj.hal.PDPJNI;
+
 public class SimCore {
 	//uncomment to run sim
 	public static void main(String[] args){

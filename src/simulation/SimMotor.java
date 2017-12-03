@@ -2,6 +2,8 @@ package simulation;
 
 import java.util.HashMap;
 
+import simulation.PDPJNI;
+
 public class SimMotor {
 	
 	public static HashMap<Integer,MotorInfo> motors;

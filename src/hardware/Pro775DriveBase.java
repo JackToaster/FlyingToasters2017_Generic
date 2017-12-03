@@ -1,10 +1,12 @@
 package hardware;
 
+import controllers.FeedForwardController;
+import simulation.CANTalon;
 import utilities.Logging;
 
 public class Pro775DriveBase extends DriveBase{
-	private LinkedTalons left;
-	private LinkedTalons right;
+	private FeedbackLinkedTalons left;
+	private FeedbackLinkedTalons right;
 	
 	public enum Talon {
 		LEFT0(8),
@@ -24,8 +26,8 @@ public class Pro775DriveBase extends DriveBase{
 	public Pro775DriveBase() {
 		super();
 		//create the linked talons for each side of the drive base
-		left = new LinkedTalons(Talon.LEFT0.id, Talon.LEFT1.id, Talon.LEFT2.id, Talon.LEFT3.id);
-		right = new LinkedTalons(Talon.RIGHT0.id, Talon.RIGHT1.id, Talon.RIGHT2.id, Talon.RIGHT3.id);
+		left = new FeedbackLinkedTalons(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute, Talon.LEFT0.id, Talon.LEFT1.id, Talon.LEFT2.id, Talon.LEFT3.id);
+		right = new FeedbackLinkedTalons(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute, Talon.RIGHT0.id, Talon.RIGHT1.id, Talon.RIGHT2.id, Talon.RIGHT3.id);
 		//add the motor controllers to the list to be updated
 		registerMotorController(left);
 		registerMotorController(right);
