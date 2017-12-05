@@ -32,7 +32,7 @@ public abstract class Utilities {
 			 * @return the converted measurement
 			 */
 			public double convert(double distance, Distance d2) {
-				return distance * d2.length / this.length;
+				return distance * this.length / d2.length;
 			}
 		}
 		

@@ -46,6 +46,7 @@ public class PIDcontroller extends ProportionalController {
 	
 	public void setILimit(double maxI){
 		maxIntegral = maxI;
+		limitIntegral = true;
 	}
 	
 	public void limitI(boolean limit){
@@ -107,7 +108,7 @@ public class PIDcontroller extends ProportionalController {
 				if (integral > 0) {
 					integral = maxIntegral / kI;
 				} else {
-					integral = maxIntegral / kI;
+					integral = -maxIntegral / kI;
 				}
 			}
 		}
@@ -121,11 +122,11 @@ public class PIDcontroller extends ProportionalController {
 		}
 
 		// calculate the proportional + FF part of the PID
-		double proportionalValue = super.run(error, deltaTime);
+		double proportionalValue = super.run(current, deltaTime);
 
 		// calculate the integral + derivative parts
-		double integralValue = integral * kI;
-		double derivativeValue = deltaError * kD;
+		double integralValue = -integral * kI;
+		double derivativeValue = -deltaError * kD;
 
 		// set the last error for next loop
 		lastReading = current;

@@ -17,12 +17,11 @@ public class Robot extends IterativeRobot {
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
-	SendableChooser<String> chooser = new SendableChooser<>();
+	//SendableChooser<String> chooser = new SendableChooser<>();
+
+	Pro775DriveBase driveBase;
 	
-	//TODO make an actual drivebase class
-	DriveBase driveBase;
-	
-	PS4 ps4 = new PS4(0);
+	//PS4 ps4 = new PS4(0);
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -30,9 +29,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
-		SmartDashboard.putData("Auto choices", chooser);
+		//chooser.addDefault("Default Auto", defaultAuto);
+		//chooser.addObject("My Auto", customAuto);
+		//SmartDashboard.putData("Auto choices", chooser);
+		driveBase = new Pro775DriveBase();
 	}
 
 	/**
@@ -67,13 +67,19 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
+	
+	@Override
+	public void teleopInit() {
+		//driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
+		driveBase.feedbackTestinit();
+	}
 	/**
 	 * This function is called periodically during operator control
 	 */
 	@Override
 	public void teleopPeriodic() {
 		standardPeriodic();
-		driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
+		//driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
 	}
 
 	/**
@@ -87,6 +93,6 @@ public class Robot extends IterativeRobot {
 	 * This method is always called periodically
 	 */
 	public void standardPeriodic() {
-
+		driveBase.update(0.05);
 	}
 }
