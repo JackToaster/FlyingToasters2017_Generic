@@ -93,4 +93,14 @@ public class FeedbackLinkedTalons extends LinkedTalons implements FeedbackMotorC
 			Logging.w("runFeedback run with feedback inactive");
 		}
 	}
+	
+	public void setCurrentLimit(int amps){
+		super.setCurrentLimit(amps);
+		feedbackTalon.setCurrentLimit(amps);
+	}
+	
+	public void EnableCurrentLimit(boolean enable){
+		super.EnableCurrentLimit(enable);
+		feedbackTalon.EnableCurrentLimit(enable);
+	}
 }

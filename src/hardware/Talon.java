@@ -21,4 +21,14 @@ public class Talon implements MotorController {
 	public double getPower() {
 		return currentPower;
 	}
+	
+	@Override
+	public void setCurrentLimit(int amps){
+		talon.setCurrentLimit(amps);
+	}
+	
+	@Override
+	public void EnableCurrentLimit(boolean enable){
+		talon.EnableCurrentLimit(enable);
+	}
 }

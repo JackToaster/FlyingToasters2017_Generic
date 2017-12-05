@@ -7,6 +7,8 @@ import simulation.CANTalon;
 import utilities.Logging;
 
 public class Pro775DriveBase extends DriveBase{
+	final static int currentLimit = 25;
+	
 	private FeedbackLinkedTalons left;
 	private FeedbackLinkedTalons right;
 	
@@ -30,6 +32,12 @@ public class Pro775DriveBase extends DriveBase{
 		//create the linked talons for each side of the drive base
 		left = new FeedbackLinkedTalons(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute, Talon.LEFT0.id, Talon.LEFT1.id, Talon.LEFT2.id, Talon.LEFT3.id);
 		right = new FeedbackLinkedTalons(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute, Talon.RIGHT0.id, Talon.RIGHT1.id, Talon.RIGHT2.id, Talon.RIGHT3.id);
+		//setup current limiting
+		left.setCurrentLimit(currentLimit);
+		right.setCurrentLimit(currentLimit);
+		left.EnableCurrentLimit(true);
+		right.EnableCurrentLimit(true);
+		
 		//add the motor controllers to the list to be updated
 		registerMotorController(left);
 		registerMotorController(right);
@@ -47,12 +55,10 @@ public class Pro775DriveBase extends DriveBase{
 	}
 	
 	public void feedbackTestinit(){
-		PIDcontroller ff1 = new PIDcontroller(0.5,0.01,0.5);
-		ff1.setDOnMeasurement(true);
+		PIDcontroller ff1 = new PIDcontroller(0.2,0.1,1);
+		PIDcontroller ff2 = new PIDcontroller(0.2,0.1,1);
 		ff1.setILimit(0.1);
-		PIDcontroller ff2 = new PIDcontroller(0.5,0.01,0.5);
 		ff2.setILimit(0.1);
-		ff2.setDOnMeasurement(true);
 		left.setFeedbackController(ff1);
 		right.setFeedbackController(ff2);
 		left.setSetpoint(3);

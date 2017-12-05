@@ -1,6 +1,8 @@
 package simulation;
 
 public class CANTalon {
+	private boolean enableCurrentLimit = false;
+	private int currentLimit = 0;
 	public enum FeedbackDevice{
 		AnalogEncoder,
 		AnalogPot ,
@@ -37,6 +39,31 @@ public class CANTalon {
 	public void setFeedbackDevice(FeedbackDevice device){}
 	private SimMotor.MotorInfo getMotorInfo(){
 		return SimMotor.motors.get(id);
+	}
+	
+	//returns the output current in amps
+	public double getOutputCurrent(){
+		double i = SimMotor.motors.get(id).getCurrent();
+		if(enableCurrentLimit){
+			if(i > currentLimit){
+				return currentLimit;
+			}else{
+				return i;
+			}
+		}else{
+			return i;
+		}
+		
+	}
+	
+	public void setVoltageRampRate(double rampRate){}
+	
+	public void setCurrentLimit(int amps){
+		currentLimit = amps;
+	}
+	
+	public void EnableCurrentLimit(boolean enable){
+		enableCurrentLimit = enable;
 	}
 	
 	private void setMotorInfo(SimMotor.MotorInfo mi){

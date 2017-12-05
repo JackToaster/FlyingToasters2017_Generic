@@ -41,4 +41,16 @@ public class LinkedTalons implements MotorController {
 	public double getPower() {
 		return currentPower;
 	}
+	
+	public void setCurrentLimit(int amps){
+		for(CANTalon ct : talons){
+			ct.setCurrentLimit(amps);
+		}
+	}
+	
+	public void EnableCurrentLimit(boolean enable){
+		for(CANTalon ct : talons){
+			ct.EnableCurrentLimit(enable);
+		}
+	}
 }

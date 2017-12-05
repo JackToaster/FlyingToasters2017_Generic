@@ -127,7 +127,7 @@ public class PIDcontroller extends ProportionalController {
 		// calculate the integral + derivative parts
 		double integralValue = -integral * kI;
 		double derivativeValue = -deltaError * kD;
-
+		
 		// set the last error for next loop
 		lastReading = current;
 		lastError = error;
