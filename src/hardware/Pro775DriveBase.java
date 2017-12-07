@@ -1,9 +1,10 @@
 package hardware;
 
+import com.ctre.CANTalon;
+
 import controllers.FeedForwardController;
 import controllers.PIDcontroller;
 import controllers.ProportionalController;
-import simulation.CANTalon;
 import utilities.Logging;
 
 public class Pro775DriveBase extends DriveBase{
