@@ -25,7 +25,7 @@ public class Path {
 	void setSpeeds(double velocity){
 		for(int i = 0; i < waypoints.size(); i++){
 			//wow big equation makes an S-curve
-			waypoints.get(i).derivatives.linVelocity = 
+			waypoints.get(i).velocity = 
 				(-0.5 * Math.cos(((double) i / (double)waypoints.size()) * 2.0 * Math.PI) + 0.5) * velocity;
 		}
 	}

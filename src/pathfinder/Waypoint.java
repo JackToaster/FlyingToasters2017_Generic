@@ -3,16 +3,12 @@ package pathfinder;
 public class Waypoint {
 	public Point position;
 	public double rotation;
-	
+	public double velocity;
 	public double time;
-	
-	public Derivatives derivatives;
-	
 	public Waypoint(Point waypointPosition, double wpRotation) {
 		position = waypointPosition;
 		rotation = wpRotation;
 		time = 0;
-		derivatives = new Derivatives();
 	}
 
 	public void setPosition(double xPosition, double yPosition) {
