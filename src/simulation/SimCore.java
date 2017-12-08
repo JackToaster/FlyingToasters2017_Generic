@@ -3,7 +3,7 @@ package simulation;
 import org.usfirst.frc.team3641.robot.Robot;
 
 import simulation.PDPJNI;
-
+import simulation.SimMotor;
 public class SimCore {
 	//skip this many frames between printing
 	static final int skipPrintFrames = 20;
