@@ -10,7 +10,7 @@ public class Path {
 	ArrayList<Waypoint> waypoints;
 	
 	public Path(Waypoint start, Waypoint end){
-		this(start, end, defaultPoints, 200);
+		this(start, end, defaultPoints, maxVel);
 	}
 	
 	//create a path from two waypoints
@@ -32,13 +32,14 @@ public class Path {
 	
 	//generates a path with a bezier curve
 	void genBezierPath(Waypoint start, Waypoint end, int numberOfPoints, double tightness) {
+		//get the location of the start and end points
 		Point startPoint = start.getPoint();
 		Point endPoint = end.getPoint();
 		double distance = startPoint.distance(endPoint);
 		double gpLength = distance / 2 * tightness;
 
-		Point startOffset = Point.PolarPoint(-gpLength, start.rotation);
-		Point endOffset =  Point.PolarPoint(gpLength,end.rotation);
+		Point startOffset = Point.PolarPoint(gpLength, start.rotation);
+		Point endOffset =  Point.PolarPoint(gpLength, end.rotation);
 
 		Point gp1 = startPoint.sum(startOffset);
 		Point gp2 = endPoint.sum(endOffset);
@@ -64,5 +65,14 @@ public class Path {
 		for (int i = 1; i < waypoints.size() - 1; i++) {
 			waypoints.get(i).pointTowards(waypoints.get(i + 1).getPoint());
 		}
+	}
+	
+	@Override
+	public String toString(){
+		String out = "";
+		for( Waypoint wp : waypoints){
+			out = out + wp.toString() + "\n";
+		}
+		return out;
 	}
 }

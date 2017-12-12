@@ -35,8 +35,8 @@ public class Waypoint {
 			}
 		} else {
 			rotation = Math.atan(yOffset / xOffset);
-			if (xOffset > 0) {
-				rotation += Math.PI;
+			if (yOffset < 0) {
+				rotation += 2.0 * Math.PI;
 			}
 		}
 		return rotation;
@@ -44,5 +44,10 @@ public class Waypoint {
 	
 	public Point getPoint(){
 		return position;
+	}
+	
+	@Override
+	public String toString(){
+		return "X: " + position.x + ", Y: " + position.y + ", Angle: " + rotation;
 	}
 }
