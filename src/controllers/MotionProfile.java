@@ -2,7 +2,7 @@ package controllers;
 
 import utilities.Logging;
 import utilities.Utilities;
-
+import pathfinder.*;
 /**
  * class for generation and excecution of motion profiles.
  * @author jackf
@@ -14,22 +14,25 @@ public class MotionProfile implements AbstractFeedbackController{
 	private Profile profile;
 	private double totalTime = 0;
 	private MPPoint lastTarget;
+	private WheelProfileGenerator wpg;
 	
 	public PIDcontroller pid;
 	public double kV = 0;
 	public double kA = 0;
 	
-	public MotionProfile(PIDcontroller pidController, double velGain, double accelGain){
+	public MotionProfile(PIDcontroller pidController, double velGain, double accelGain, WheelProfileGenerator wheelProfileGen){
 		pid= pidController;
 		kV = velGain;
 		kA = accelGain;
+		wpg = wheelProfileGen;
 	}
 	
-	public MotionProfile(PIDcontroller pidController, double velGain, double accelGain, Profile p){
+	public MotionProfile(PIDcontroller pidController, double velGain, double accelGain, WheelProfileGenerator wheelProfileGen, Profile p){
 		pid= pidController;
 		kV = velGain;
 		kA = accelGain;
 		profile = p;
+		wpg = wheelProfileGen;
 		lastTarget = p.start();
 	}
 	
@@ -39,6 +42,31 @@ public class MotionProfile implements AbstractFeedbackController{
 		}else{
 			profile.setPoints(points);
 			lastTarget = profile.start();
+		}
+	}
+	
+	public void generateProfileFromPath(Path path){
+		profile = wpg.genPoints(path);
+	}
+	
+	public abstract class WheelProfileGenerator {
+		public abstract Profile genPoints(Path p);
+	}
+	
+	public class SkidsteerProfileGenerator extends WheelProfileGenerator {
+		private double rightOffset;
+		
+		public SkidsteerProfileGenerator(double rightOffset){
+			this.rightOffset = rightOffset;
+		}
+		
+		@Override
+		public Profile genPoints(Path p){
+			Waypoint firstWP = p.waypoints.get(0);
+			MPPoint first = new MPPoint(firstWP.velocity,0,0);
+			Point startPoint = firstWP.position.sum(Point.polarPoint(rightOffset, 3 * Math.PI / 2));
+			System.out.println("Start vel: " + first.velocity);
+			return new Profile();
 		}
 	}
 	

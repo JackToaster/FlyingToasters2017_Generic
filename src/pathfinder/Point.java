@@ -3,7 +3,6 @@ package pathfinder;
 public class Point {
 	//the coordinates of the point
 	public double x, y;
-
 	//create a point the normal way
 	public Point(double xPosition, double yPosition) {
 		x = xPosition;

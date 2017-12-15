@@ -7,7 +7,7 @@ public class Path {
 	static final int defaultPoints = 200;
 	
 	//a path consists of a list of waypoints.
-	ArrayList<Waypoint> waypoints;
+	public ArrayList<Waypoint> waypoints;
 	
 	public Path(Waypoint start, Waypoint end){
 		this(start, end, defaultPoints, maxVel);
@@ -26,7 +26,7 @@ public class Path {
 		for(int i = 0; i < waypoints.size(); i++){
 			//wow big equation makes an S-curve
 			waypoints.get(i).velocity = 
-				(-0.5 * Math.cos(((double) i / (double)waypoints.size()) * 2.0 * Math.PI) + 0.5) * velocity;
+				(-0.5 * Math.cos(((double) (i + 1) / (double)waypoints.size()) * 2.0 * Math.PI) + 0.5) * velocity;
 		}
 	}
 	
