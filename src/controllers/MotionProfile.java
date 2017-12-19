@@ -49,31 +49,52 @@ public class MotionProfile implements AbstractFeedbackController{
 		profile = wpg.genPoints(path);
 	}
 	
+	//takes a Path and makes a motion profile for a specific wheel
 	public abstract class WheelProfileGenerator {
 		public abstract Profile genPoints(Path p);
 	}
 	
+	//wheel profile generator for robots with wheels on either side
 	public class SkidsteerProfileGenerator extends WheelProfileGenerator {
+		//how far to the right the wheel is, negative for left
 		private double rightOffset;
 		
+		//constructor
 		public SkidsteerProfileGenerator(double rightOffset){
 			this.rightOffset = rightOffset;
 		}
 		
+		//generate the motion profile for the path
 		@Override
 		public Profile genPoints(Path p){
+			Profile outProfile = new Profile(p.waypoints.size());
 			Waypoint firstWP = p.waypoints.get(0);
-			MPPoint first = new MPPoint(firstWP.velocity,0,0);
-			Point startPoint = firstWP.position.sum(Point.polarPoint(rightOffset, 3 * Math.PI / 2));
-			System.out.println("Start vel: " + first.velocity);
-			return new Profile();
+			Point firstPoint = getOffsetPoint(firstWP);
+			MPPoint startMPPoint = new MPPoint(firstWP.velocity,0,0);
+			
+			outProfile.setPoint(0,startMPPoint);
+			
+			double totalDist = 0;
+			for(int i = 1; i < p.waypoints.size(); i++){
+				Waypoint wp = p.waypoints.get(i);
+				Point offsetPoint = getOffsetPoint(wp);
+				
+				
+			}
+			return outProfile;
+		}
+		
+		private Point getOffsetPoint(Waypoint wp){
+			return wp.position.sum(Point.PolarPoint(rightOffset, 3 * Math.PI / 2));
 		}
 	}
 	
 	public class Profile {
 		private MPPoint[] trajectory;
 		
-		public Profile(){}
+		public Profile(int length){
+			trajectory = new MPPoint[length];
+		}
 		
 		public void setPoints(MPPoint... points){
 			if(points.length < 2){
@@ -83,6 +104,9 @@ public class MotionProfile implements AbstractFeedbackController{
 			}
 		}
 		
+		public void setPoint(int index, MPPoint point){
+			trajectory[index] = point;
+		}
 		public MPPoint getPoint(int index){
 			return trajectory[index];
 		}

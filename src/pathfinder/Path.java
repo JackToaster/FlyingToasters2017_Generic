@@ -18,6 +18,7 @@ public class Path {
 		waypoints = new ArrayList<Waypoint>();
 		genBezierPath(start, end, numberOfPoints, 0.5);
 		setSpeeds(velocity);
+		setTimes();
 		alignWaypoints();
 	}
 	
@@ -27,6 +28,15 @@ public class Path {
 			//wow big equation makes an S-curve
 			waypoints.get(i).velocity = 
 				(-0.5 * Math.cos(((double) (i + 1) / (double)waypoints.size()) * 2.0 * Math.PI) + 0.5) * velocity;
+		}
+	}
+	
+	//set the times of the waypoints
+	void setTimes(){
+		//set the first time to 0
+		waypoint.get(0).time = 0;
+		for(int i = 1; i < waypoints.size(); i++){
+			waypoints.get(i).time
 		}
 	}
 	
