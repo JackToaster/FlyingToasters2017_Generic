@@ -16,7 +16,7 @@ public class SimCore {
 		Waypoint start = new Waypoint(new Point(1,1), Math.PI / 2.0);
 		Waypoint end = new Waypoint(new Point(5,1), Math.PI / 2.0);
 		
-		Path p = new Path(start, end, 10, 0.5);
+		Path p = new Path(start, end, 1000, 0.5);
 		
 		System.out.println(p);
 		/*

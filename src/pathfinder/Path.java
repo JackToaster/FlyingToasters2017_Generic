@@ -25,18 +25,23 @@ public class Path {
 	//sets the speeds of the points on the path
 	void setSpeeds(double velocity){
 		for(int i = 0; i < waypoints.size(); i++){
-			//wow big equation makes an S-curve
+			//wow big equation makes an S-curve maybe but its really really really bad
 			waypoints.get(i).velocity = 
-				(-0.5 * Math.cos(((double) (i + 1) / (double)waypoints.size()) * 2.0 * Math.PI) + 0.5) * velocity;
+				(-0.5 * Math.cos(((double) (i + 1) / (double)waypoints.size()) * 2.0 * Math.PI) + 0.5) * velocity * 7.50 + 0.1;
 		}
 	}
 	
 	//set the times of the waypoints
 	void setTimes(){
 		//set the first time to 0
-		waypoint.get(0).time = 0;
+		waypoints.get(0).time = 0;
+		//get the first position
+		Waypoint lastPoint = waypoints.get(0);
 		for(int i = 1; i < waypoints.size(); i++){
-			waypoints.get(i).time
+			double distance = waypoints.get(i).position.distance(lastPoint.position);
+			double avgVel = lastPoint.velocity;
+			waypoints.get(i).time = distance / avgVel + lastPoint.time;
+			lastPoint = waypoints.get(i);
 		}
 	}
 	
