@@ -1,7 +1,8 @@
-package controllers;
+package controllers.motion_profiles;
 
 import utilities.Logging;
-import utilities.Utilities;
+import controllers.AbstractFeedbackController;
+import controllers.PIDcontroller;
 import pathfinder.*;
 /**
  * class for generation and excecution of motion profiles.
@@ -45,54 +46,29 @@ public class MotionProfile implements AbstractFeedbackController{
 		}
 	}
 	
-	public void generateProfileFromPath(Path path){
-		profile = wpg.genPoints(path);
-	}
-	
-	
-	/**
-	 * Motion profile point class, has a position, velocity, and time (in ms)
-	 * 
-	 * @author jackf
-	 *
-	 */
-	public static class MPPoint {
-		public double position;
-		public double velocity;
-		public double time;
-
-		public MPPoint(double vel, double pos, double t) {
-			velocity = vel;
-			position = pos;
-			time = t;
-		}
-		
-		public MPPoint lerp(MPPoint p2, double alpha){
-			double newVel = Utilities.lerp(this.velocity, p2.velocity, alpha);
-			double newPos = Utilities.lerp(this.position, p2.position, alpha);
-			double newTime = Utilities.lerp(this.time, p2.time, alpha);
-			return new MPPoint(newVel, newPos, newTime);
-		}
+	public void generateProfileFromPath(Path path, double offset){
+		profile = wpg.genPoints(path, offset);
+		lastTarget = profile.start();
 	}
 
 	@Override
-	public void setGains(double... gains){
+	public void setGains(double... gains) {
 		if (gains.length != 5) {// check to see if there are the right number
 			// of values
 			Logging.logMessage("Invalid number of parameters for MotionProfile.setGains", Logging.Priority.ERROR);
 
 		} else {
-			pid.setGains(gains[0],gains[1],gains[2]);
+			pid.setGains(gains[0], gains[1], gains[2]);
 			kV = gains[3];
 			kA = gains[4];
 		}
 	}
-	
+
 	@Override
-	public void readFromPrefs(String name){
-		//TODO make read from prefs
+	public void readFromPrefs(String name) {
+		// TODO make read from prefs
 	}
-	
+
 	//setting/getting the setpoint of a motion profile makes no sense.
 	@Override
 	public void setSetpoint(double setpoint){}
@@ -134,5 +110,13 @@ public class MotionProfile implements AbstractFeedbackController{
 
 	public void logStatus(){
 		Logging.l("Motion profile - current time: " + totalTime);
+	}
+	
+	public String toString() {
+		if(profile != null) {
+			return "Generator: " + wpg.toString() + "\n Profile:\n" + profile.toString();
+		}else {
+			return "Generator: " + wpg.toString() + ", no profile generated";
+		}
 	}
 }

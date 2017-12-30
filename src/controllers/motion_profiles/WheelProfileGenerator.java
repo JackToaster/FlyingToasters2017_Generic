@@ -1,6 +1,6 @@
-package controllers;
+package controllers.motion_profiles;
 import pathfinder.*;
 public abstract class WheelProfileGenerator {
-	public abstract MotionProfile.Profile genPoints(Path p);
+	public abstract Profile genPoints(Path p, double offset);
 }
 

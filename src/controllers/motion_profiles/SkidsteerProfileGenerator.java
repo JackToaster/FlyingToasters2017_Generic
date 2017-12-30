@@ -1,4 +1,4 @@
-package controllers;
+package controllers.motion_profiles;
 import pathfinder.*;
 //wheel profile generator for robots with wheels on either side
 public class SkidsteerProfileGenerator extends WheelProfileGenerator {
@@ -11,16 +11,16 @@ public class SkidsteerProfileGenerator extends WheelProfileGenerator {
 	}
 	//generate the motion profile for the path
 	@Override
-	public MotionProfile.Profile genPoints(Path p){
-		MotionProfile.Profile outProfile = new MotionProfile.Profile(p.waypoints.size());
+	public Profile genPoints(Path p, double offset){
+		Profile outProfile = new Profile(p.waypoints.size());
 		Waypoint firstWP = p.waypoints.get(0);
 		Point firstPoint = getOffsetPoint(firstWP);
-		MotionProfile.MPPoint startMPPoint = new MotionProfile.MPPoint(firstWP.velocity,0,0);
+		MPPoint startMPPoint = new MPPoint(firstWP.velocity,offset,0);
 
 		outProfile.setPoint(0,startMPPoint);
 
 		//loop through every other point and add it to the profile
-		double totalDist = 0;
+		double totalDist = offset;
 		Point lastOffsetPoint = firstPoint;
 		for(int i = 1; i < p.waypoints.size(); i++){
 			//get the current waypoint
@@ -35,8 +35,10 @@ public class SkidsteerProfileGenerator extends WheelProfileGenerator {
 			totalDist += dist;
 			double vel = dist / dT;
 			//create the profile point and add it
-			MotionProfile.MPPoint currentMPPoint = new MotionProfile.MPPoint(vel, totalDist, wp.time);
+			MPPoint currentMPPoint = new MPPoint(vel, totalDist, wp.time);
 			outProfile.setPoint(i, currentMPPoint);
+			
+			lastOffsetPoint = offsetPoint;
 		}
 		//return it!
 		return outProfile;

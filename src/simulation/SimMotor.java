@@ -35,7 +35,7 @@ public class SimMotor {
 		private double Kbemf = 0.125;
 		//the minimum amount of throttle to move
 		//TODO make it work
-		private double minThrottle = 0.05;
+		//private double minThrottle = 0.05;
 		private double accel;
 		private double maxVel;
 		private double currentAmps = 0;

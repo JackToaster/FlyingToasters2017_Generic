@@ -2,11 +2,12 @@ package org.usfirst.frc.team3641.robot;
 
 
 import simulation.IterativeRobot;
+import simulation.HardwareTimer;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import hardware.DriveBase;
 import hardware.Pro775DriveBase;
-
+import pathfinder.Point;
+import pathfinder.Waypoint;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -22,6 +23,10 @@ public class Robot extends IterativeRobot {
 
 	Pro775DriveBase driveBase;
 	
+	HardwareTimer timer;
+	double lastTime;
+	double deltaTime = 0;;
+	
 	//PS4 ps4 = new PS4(0);
 	
 	/**
@@ -34,6 +39,8 @@ public class Robot extends IterativeRobot {
 		//chooser.addObject("My Auto", customAuto);
 		//SmartDashboard.putData("Auto choices", chooser);
 		driveBase = new Pro775DriveBase();
+		timer = new HardwareTimer();
+		lastTime = timer.getFPGATimestamp();
 	}
 
 	/**
@@ -71,8 +78,9 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void teleopInit() {
-		//driveBase.drive(ps4.getAxis(PS4.Axis.LEFT_Y), ps4.getAxis(PS4.Axis.RIGHT_Y));
-		driveBase.feedbackTestinit();
+		Waypoint start = new Waypoint(new Point(0,0), Math.PI / 2.0);
+		Waypoint end = new Waypoint(new Point(100,0), Math.PI / 2.0);
+		driveBase.driveFromTo(start,end);
 	}
 	/**
 	 * This function is called periodically during operator control
@@ -94,6 +102,16 @@ public class Robot extends IterativeRobot {
 	 * This method is always called periodically
 	 */
 	public void standardPeriodic() {
-		driveBase.update(0.05);
+		double currentTime = timer.getFPGATimestamp();
+		deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
+		driveBase.update(deltaTime);
+	}
+	
+	/**
+	 * This method is always called to initialize
+	 */
+	public void standardInit() {
+		lastTime = timer.getFPGATimestamp();
 	}
 }

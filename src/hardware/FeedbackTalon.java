@@ -27,7 +27,6 @@ public class FeedbackTalon extends Talon implements FeedbackMotorController, Uti
 	@Override
 	public void setFeedbackController(AbstractFeedbackController controller) {
 		feedbackController = controller;
-		
 	}
 
 	@Override
@@ -63,6 +62,11 @@ public class FeedbackTalon extends Talon implements FeedbackMotorController, Uti
 	@Override
 	public void setFeedbackDevice(FeedbackDevice device) {
 		talon.setFeedbackDevice(device);
+	}
+
+	@Override
+	public AbstractFeedbackController getFeedbackController() {
+		return feedbackController;
 	}
 
 }

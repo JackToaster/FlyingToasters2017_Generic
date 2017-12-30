@@ -1,11 +1,13 @@
 package simulation;
 
 import org.usfirst.frc.team3641.robot.Robot;
-
 import simulation.PDPJNI;
 import simulation.SimMotor;
 import pathfinder.*;
 import controllers.*;
+import controllers.motion_profiles.*;
+
+@SuppressWarnings("unused")
 public class SimCore {
 	//skip this many frames between printing
 	static final int skipPrintFrames = 20;
@@ -17,12 +19,6 @@ public class SimCore {
 		Waypoint start = new Waypoint(new Point(1,1), Math.PI / 2.0);
 		Waypoint end = new Waypoint(new Point(5,1), Math.PI / 2.0);
 		
-		Path p = new Path(start, end, 10, 0.5);
-		PIDcontroller  pid = new PIDcontroller(0.2,0.1,1);
-		WheelProfileGenerator wpg = new SkidsteerProfileGenerator(0.5);
-		MotionProfile mp = new MotionProfile(pid, 1, 1, wpg);
-		System.out.println(p);
-		/*
 		SimMotor simMotor = new SimMotor();
 		IterativeRobot robot = new Robot();
 		simMotor.addMotor(8, 5, 4.5,1);
@@ -45,6 +41,7 @@ public class SimCore {
 			}catch(InterruptedException e){
 				break;
 			}
+			HardwareTimer.incrementTimer(stepTime);
 			robot.teleopPeriodic();
 			simMotor.updateMotors(stepTime);
 			frameCount++;
@@ -54,6 +51,5 @@ public class SimCore {
 				System.out.println("Total current: " + PDPJNI.getPDPTotalCurrent(16));
 			}
 		}
-		*/
 	}
 }

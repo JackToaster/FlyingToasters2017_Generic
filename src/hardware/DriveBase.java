@@ -1,13 +1,13 @@
 package hardware;
 
 import java.util.ArrayList;
-
 /**
  * Drivebase class for all of your driving needs
  * 
  * @author jackf
  *
  */
+
 public abstract class DriveBase{
 	protected boolean isActive = true;
 	//these two should be mutually exclusive.
@@ -42,7 +42,11 @@ public abstract class DriveBase{
 			}
 		}else{
 			for(FeedbackMotorController c: feedbackControllers){
-				c.runFeedback(dT);
+				if(c.getFeedbackActive()) {
+					c.runFeedback(dT);
+				}else {
+					c.setPower(0);
+				}
 			}
 		}
 	};
