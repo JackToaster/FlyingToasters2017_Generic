@@ -5,7 +5,7 @@ public class Logging {
 	public enum Priority {
 		LOW(0), MID(1), HIGH(2), WARN(3), ERROR(4);
 
-		private final int intValue;
+		private int intValue;
 
 		Priority(int val) {
 			this.intValue = val;

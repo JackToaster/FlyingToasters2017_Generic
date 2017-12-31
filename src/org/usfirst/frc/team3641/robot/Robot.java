@@ -78,8 +78,8 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void teleopInit() {
-		Waypoint start = new Waypoint(new Point(0,0), Math.PI / 2.0);
-		Waypoint end = new Waypoint(new Point(100,0), Math.PI / 2.0);
+		Waypoint start = new Waypoint(new Point(0,0), 0);
+		Waypoint end = new Waypoint(new Point(10,0), 0);
 		driveBase.driveFromTo(start,end);
 	}
 	/**

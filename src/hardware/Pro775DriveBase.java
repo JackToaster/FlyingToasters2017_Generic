@@ -12,8 +12,8 @@ import utilities.Logging;
 public class Pro775DriveBase extends DriveBase{
 	final static int currentLimit = 25;
 
-	final static double velGain = 0.00;
-	final static double accelGain = 0.00;
+	final static double velGain = 0.05;
+	final static double accelGain = 0.001;
 	
 	private PIDcontroller leftMotionProfilePID = new PIDcontroller(1,0,0);
 	private PIDcontroller rightMotionProfilePID = new PIDcontroller(1,0,0);
@@ -89,7 +89,8 @@ public class Pro775DriveBase extends DriveBase{
 	
 	public void driveFromTo(Waypoint from, Waypoint to) {
 		//generate path then drive it
-		Path path = new Path(from, to, 200, 1);
+		Path path = new Path(from, to, 200, 0.5);
+		Logging.h(path);
 		drivePath(path);
 		
 	}
